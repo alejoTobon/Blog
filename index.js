@@ -5,7 +5,7 @@ import rutaUser from "./Routes/usuarioRoutes.js";
 import rutaPublic from "./Routes/publicacionRoutes.js";
 import { ssequelize } from "./db.js";
 
-import {cors} from "cors";
+import cors from "cors";
 
 
 import dotenv from 'dotenv';
