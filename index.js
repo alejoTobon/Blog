@@ -4,6 +4,10 @@ import rutaComent from "./Routes/comentarioRoutes.js";
 import rutaUser from "./Routes/usuarioRoutes.js";
 import rutaPublic from "./Routes/publicacionRoutes.js";
 import { ssequelize } from "./db.js";
+
+import {cors} from "cors";
+
+
 import dotenv from 'dotenv';
 dotenv.config();
 const app = express();
@@ -14,7 +18,7 @@ app.use(rutaComent)
 app.use(rutaUser)
 app.use(rutaPublic)
 
-
+app.use(cors())
 
 
 app.server = app.listen(puerto, () => {
