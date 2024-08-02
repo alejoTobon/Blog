@@ -25,11 +25,12 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Uso del middleware de multer en las rutas específicas que manejan archivos
-app.use('/usuario/crear', upload.single('foto'), rutaUser); // Rutas que manejan archivos
-app.use('/usuario/actualizar/:id', upload.single('foto'), rutaUser); // Rutas que manejan archivos
 
 app.use(rutaComent);
 app.use(rutaPublic);
+app.use(rutaUser);
+app.use('/usuario/crear', upload.single('foto'), rutaUser); // Rutas que manejan archivos
+app.use('/usuario/actualizar/:id', upload.single('foto'), rutaUser); // Rutas que manejan archivos
 
 app.server = app.listen(puerto, () => {
   console.log(`Server ejecutándose en ${puerto}...`);
