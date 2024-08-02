@@ -14,7 +14,9 @@ export const buscar = async (req, res) => {
 export const crear = async (req, res) => {
   try {
     const { nombre, email, contrasena, RolId } = req.body;
+    console.log('Datos recibidos:', req.body); // Log para verificar los datos recibidos
     const foto = req.file ? req.file.filename : null;
+    console.log('Foto:', foto); // Log para verificar si la foto fue subida correctamente
 
     // Encriptar la contraseña con MD5
     const hashedPassword = md5(contrasena);
@@ -34,6 +36,7 @@ export const crear = async (req, res) => {
     res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message });
   }
 };
+
 
 export const actualizar = async (req, res) => {
   try {
