@@ -2,7 +2,7 @@ import {md5} from "md5"
 
 const Usuario = require('./models/usuario');
 
-export const login = async (req, res) => {
+export const ingreso = async (req, res) => {
   try {
     const { email, contrasena } = req.body;
 
