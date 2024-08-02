@@ -1,40 +1,45 @@
-import md5 from "md5";
-
-import { Usuario } from "../Models/usuario.js";
-import { Rol } from "../Models/rol.js";
+import md5 from 'md5';
+import { Usuario } from '../Models/usuario.js';
+import { Rol } from '../Models/rol.js';
 
 export const buscar = async (req, res) => {
-  const usuarios = await Usuario.findAll();
-  res.send({ usuarios });
+  try {
+    const usuarios = await Usuario.findAll();
+    res.send({ usuarios });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message });
+  }
 };
 
 export const crear = async (req, res) => {
-  
-    const { nombre, foto, email, contrasena, RolId } = req.body;
+  try {
+    const { nombre, email, contrasena, RolId } = req.body;
+    const foto = req.file ? req.file.filename : null;
 
     // Encriptar la contraseña con MD5
     const hashedPassword = md5(contrasena);
 
-    // Crear el usuario y establecer la relación con el rol
+    // Crear el usuario
     const nuevoUsuario = await Usuario.create({
       nombre,
       foto,
       email,
-      contrasena: hashedPassword, // Guardar la contraseña encriptada con MD5
+      contrasena: hashedPassword,
       RolId
     });
 
     res.status(201).json({ nuevoUsuario });
-  
+  } catch (error) {
     console.error('Error al crear el usuario:', error);
-    res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message});
-  
+    res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message });
+  }
 };
 
-export const actualizar= async (req, res) => {
+export const actualizar = async (req, res) => {
   try {
-    const { nombre, foto, email, contrasena, RolId } = req.body;
+    const { nombre, email, contrasena, RolId } = req.body;
     const usuarioId = req.params.id;
+    const foto = req.file ? req.file.filename : null;
 
     // Encriptar la contraseña con MD5 si se proporciona
     let hashedPassword = contrasena;
@@ -55,7 +60,7 @@ export const actualizar= async (req, res) => {
     usuario.nombre = nombre;
     usuario.foto = foto;
     usuario.email = email;
-    usuario.contrasena = hashedPassword; // Guardar la contraseña encriptada con MD5
+    usuario.contrasena = hashedPassword;
     usuario.RolId = RolId;
 
     await usuario.save();
@@ -68,11 +73,16 @@ export const actualizar= async (req, res) => {
 };
 
 export const eliminar = async (req, res) => {
-  const usuarios = await usuario.findByPk(req.params.id);
-  if (usuarios) {
-    await usuarios.destroy();
-    res.send("eliminado !");
-  } else {
-    res.status(400).send("no existe el id");
+  try {
+    const usuario = await Usuario.findByPk(req.params.id);
+    if (usuario) {
+      await usuario.destroy();
+      res.send("Usuario eliminado");
+    } else {
+      res.status(404).send("Usuario no encontrado");
+    }
+  } catch (error) {
+    console.error('Error al eliminar el usuario:', error);
+    res.status(500).send("Error interno del servidor");
   }
 };
