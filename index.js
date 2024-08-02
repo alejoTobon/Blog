@@ -19,8 +19,7 @@ const corsOptions = {
 const app = express();
 const puerto = 3100;
 
-// Configuración de multer para manejar archivos
-const upload = multer({ dest: 'uploads/' });
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
