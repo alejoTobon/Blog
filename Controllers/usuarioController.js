@@ -9,7 +9,7 @@ export const buscar = async (req, res) => {
 };
 
 export const crear = async (req, res) => {
-  try {
+  
     const { nombre, foto, email, contrasena, RolId } = req.body;
 
     // Encriptar la contraseña con MD5
@@ -25,10 +25,10 @@ export const crear = async (req, res) => {
     });
 
     res.status(201).json({ nuevoUsuario });
-  } catch (error) {
+  
     console.error('Error al crear el usuario:', error);
     res.status(500).json({ mensaje: 'Error interno del servidor', error: error.message});
-  }
+  
 };
 
 export const actualizar= async (req, res) => {
