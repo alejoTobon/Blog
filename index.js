@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import multer from 'multer';
+import upload from './config/upload.js';
 import rutaComent from "./Routes/comentarioRoutes.js";
 import rutaUser from "./Routes/usuarioRoutes.js";
 import rutaPublic from "./Routes/publicacionRoutes.js";
