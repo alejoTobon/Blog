@@ -1,12 +1,11 @@
-import { buscar,crear,eliminar,actualizar } from "../Controllers/usuarioController.js";
+import express from 'express';
+import { crear, actualizar, eliminar, buscar } from '../Controllers/usuarioController.js';
 
-import { Router } from "express";
+const router = express.Router();
 
-const usuario = Router();
+router.post('/usuario/crear', crear);
+router.put('/usuario/actualizar/:id', actualizar);
+router.delete('/usuario/eliminar/:id', eliminar);
+router.get('/usuarios', buscar);
 
-usuario.get("/usuario/buscar", buscar)
-usuario.post("/usuario/crear",crear)
-usuario.put("/usuario/actualizar/:id", actualizar)
-usuario.delete("/usuario/eliminar/:id", eliminar)
-
-export default usuario;
+export default router;
