@@ -29,6 +29,7 @@ app.use(express.json());
 app.use(rutaComent);
 app.use(rutaPublic);
 app.use(rutaUser);
+app.post('/usuario/crear', upload.single('foto'), rutaUser);
 app.use('/usuario/crear', upload.single('foto'), rutaUser); // Rutas que manejan archivos
 app.use('/usuario/actualizar/:id', upload.single('foto'), rutaUser); // Rutas que manejan archivos
 
