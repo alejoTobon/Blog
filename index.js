@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
 import multer from 'multer';
-import upload from './config/upload.js';
+import dotenv from 'dotenv';
+
 import rutaComent from "./Routes/comentarioRoutes.js";
 import rutaUser from "./Routes/usuarioRoutes.js";
 import rutaPublic from "./Routes/publicacionRoutes.js";
 import { ssequelize } from "./db.js";
-import dotenv from 'dotenv';
+import { crear, actualizar } from './Controllers/usuarioController.js'; // Asegúrate de importar el controlador 'actualizar'
 
 dotenv.config();
 
@@ -19,29 +20,28 @@ const corsOptions = {
 const app = express();
 const puerto = 3100;
 
-
+const upload = multer({ dest: 'uploads/' }); // Asegúrate de que esta configuración sea la correcta
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Uso del middleware de multer en las rutas específicas que manejan archivos
+app.use('/comentarios', rutaComent);
+app.use('/publicaciones', rutaPublic);
+app.use('/usuarios', rutaUser); // Prefijo general para las rutas de usuarios
 
-app.use(rutaComent);
-app.use(rutaPublic);
-app.use(rutaUser);
-app.post('/usuario/crear', upload.single('foto'), rutaUser);
-app.use('/usuario/crear', upload.single('foto'), rutaUser); // Rutas que manejan archivos
-app.use('/usuario/actualizar/:id', upload.single('foto'), rutaUser); // Rutas que manejan archivos
+// Rutas específicas para manejar archivos
+app.post('/usuarios/crear', upload.single('foto'), crear);
+app.post('/usuarios/actualizar/:id', upload.single('foto'), actualizar);
 
 app.server = app.listen(puerto, () => {
   console.log(`Server ejecutándose en ${puerto}...`);
 });
 
-ssequelize
-  .sync({ force: false })
-  .then(() => {
+(async () => {
+  try {
+    await ssequelize.sync({ force: false });
     console.log("Sincronización ok!");
-  })
-  .catch((error) => {
+  } catch (error) {
     console.log(`Error en la sincronización: ${error}`);
-  });
+  }
+})();

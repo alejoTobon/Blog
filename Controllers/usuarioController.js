@@ -2,6 +2,7 @@ import md5 from 'md5';
 import { Usuario } from '../Models/usuario.js';
 import { Rol } from '../Models/rol.js';
 
+
 export const buscar = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
@@ -14,9 +15,17 @@ export const buscar = async (req, res) => {
 export const crear = async (req, res) => {
   try {
     const { nombre, email, contrasena, RolId } = req.body;
-    console.log('Datos recibidos:', req.body); // Log para verificar los datos recibidos
+
+    if (!nombre) {
+      return res.status(400).json({ mensaje: 'La nombre es requerida' });
+    }
+    if (!contrasena) {
+      return res.status(400).json({ mensaje: 'La contraseña es requerida' });
+    }
+
     const foto = req.file ? req.file.filename : null;
-    console.log('Foto:', foto); // Log para verificar si la foto fue subida correctamente
+    console.log('Datos recibidos:', req.body);
+    console.log('Foto:', foto);
 
     // Encriptar la contraseña con MD5
     const hashedPassword = md5(contrasena);
