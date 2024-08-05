@@ -2,11 +2,10 @@ import express from "express";
 import cors from "cors";
 import multer from 'multer';
 import dotenv from 'dotenv';
-
 import rutaComent from "./Routes/comentarioRoutes.js";
 import rutaUser from "./Routes/usuarioRoutes.js";
 import rutaPublic from "./Routes/publicacionRoutes.js";
-import login from "./Routes/loginRoutes.js";
+import ingresar from "./Routes/loginRoutes.js";
 import { ssequelize } from "./db.js";
 import { crear, actualizar } from './Controllers/usuarioController.js'; // Asegúrate de importar el controlador 'actualizar'
 
@@ -25,7 +24,7 @@ const upload = multer({ dest: 'uploads/' }); // Asegúrate de que esta configura
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/login',login);
+app.use('/login',ingresar);
 app.use('/comentarios', rutaComent);
 app.use('/publicaciones', rutaPublic);
 app.use('/usuarios', rutaUser); // Prefijo general para las rutas de usuarios
