@@ -1,6 +1,8 @@
-import {md5} from "md5"
+import md5 from "md5"
 
-const Usuario = require('./models/usuario');
+import { Usuario } from "../Models/usuario.js";
+
+
 
 export const ingreso = async (req, res) => {
   try {
