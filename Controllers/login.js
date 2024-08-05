@@ -2,14 +2,16 @@ import md5 from "md5"
 
 import { Usuario } from "../Models/usuario.js";
 
+import jwt from 'jsonwebtoken';
 
 
 export const ingreso = async (req, res) => {
   try {
     const { email, contrasena } = req.body;
 
-   
-    const usuario = await Usuario.findOne({ where: { email } });
+    console.log(email);
+    const usuario = await Usuario.findOne({ where: { email:email } });
+  
     if (!usuario) {
       return res.status(404).json({ mensaje: 'Correo electrónico o contraseña incorrectos' });
     }

@@ -14,6 +14,8 @@ export const buscar = async (req, res) => {
 
 export const crear = async (req, res) => {
   try {
+    console.log(req.body);
+    //change for form data
     const { nombre, email, contrasena, RolId } = req.body;
 
     if (!nombre) {
@@ -33,7 +35,7 @@ export const crear = async (req, res) => {
     // Crear el usuario
     const nuevoUsuario = await Usuario.create({
       nombre,
-      foto,
+      foto ,
       email,
       contrasena: hashedPassword,
       RolId

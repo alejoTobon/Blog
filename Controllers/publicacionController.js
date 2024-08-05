@@ -2,20 +2,21 @@ import { Publicacion } from "../Models/publicacion.js";
 import { Usuario } from "../Models/usuario.js";
 
 export const buscar = async (req, res) => {
-  const publicaciones = await publicacion.findAll();
+  const publicaciones = await Publicacion.findAll();
   res.send({ publicaciones });
 };
 
 export const crear = async (req, res) => {
   try {
-    const { titulo, imagen, contenido, fechaPublicacion, usuarioId } = req.body;
+    const { titulo,contenido, fechaPublicacion, usuarioId } = req.body;
 
-  
+  console.log(usuarioId)
     const usuario = await Usuario.findByPk(usuarioId);
     if (!usuario) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
 
+    const imagen = req.file ? req.file.filename : null;
    
     const nuevaPublicacion = await Publicacion.create({
       titulo,
@@ -34,7 +35,7 @@ export const crear = async (req, res) => {
 
 export const actualizar = async (req, res) => {
   try {
-    const { titulo,imagen, contenido, fechaPublicacion, usuarioId } = req.body;
+    const { titulo, contenido, fechaPublicacion, usuarioId } = req.body;
     const publicacionId = req.params.id;
 
  
@@ -48,7 +49,7 @@ export const actualizar = async (req, res) => {
     if (!usuario) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
-
+    const imagen = req.file ? req.file.filename : null;
 
     publicacion.titulo = titulo;
     publicacion.imagen = imagen;
