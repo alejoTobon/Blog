@@ -3,10 +3,31 @@ import { Publicacion } from "../Models/publicacion.js";
 import { Usuario } from "../Models/usuario.js";
 
 export const buscar = async (req, res) => {
-  const comentario = await Comentario.findAll();
-  res.send({ comentario });
-};
+  const { id } = req.body; // Suponiendo que pasas el id de la publicación como query param
 
+  if (!id) {
+    return res.status(400).json({ mensaje: 'Falta el ID de la publicación' });
+  }
+
+  try {
+    const comentarios = await Comentario.findAll({
+      where: { PublicacionId: id }, // Filtra los comentarios por el ID de la publicación
+      include: [
+        { model: Usuario, attributes: ['nombre'] }, // Incluye información del usuario que hizo el comentario
+        { model: Publicacion, attributes: ['titulo'] } // Incluye información de la publicación (opcional)
+      ]
+    });
+
+    if (!comentarios.length) {
+      return res.status(404).json({ mensaje: 'No se encontraron comentarios para esta publicación' });
+    }
+
+    res.status(200).json({ comentarios });
+  } catch (error) {
+    console.error('Error al buscar los comentarios:', error);
+    res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
+};
 export const crear= async (req, res) => {
   try {
     const { contenido, fechaPublicacion, usuarioId, publicacionId } = req.body;
