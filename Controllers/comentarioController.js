@@ -2,8 +2,12 @@ import { Comentario } from "../Models/comentario.js";
 import { Publicacion } from "../Models/publicacion.js";
 import { Usuario } from "../Models/usuario.js";
 
+
+
+
+
 export const buscar = async (req, res) => {
-  const { id } = req.body; // Suponiendo que pasas el id de la publicación como query param
+  const { id } = req.query; // Extrae el id de los parámetros de consulta
 
   if (!id) {
     return res.status(400).json({ mensaje: 'Falta el ID de la publicación' });
@@ -28,6 +32,7 @@ export const buscar = async (req, res) => {
     res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 };
+
 export const crear= async (req, res) => {
   try {
     const { contenido, fechaPublicacion, usuarioId, publicacionId } = req.body;
