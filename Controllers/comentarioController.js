@@ -21,8 +21,8 @@ export const crear= async (req, res) => {
     const nuevoComentario = await Comentario.create({
       contenido,
       fechaPublicacion,
-      UsuarioId: usuarioId,
-      PublicacionId: publicacionId
+      usuarioId,
+      publicacionId
     });
 
     res.status(201).json({ nuevoComentario });
