@@ -8,24 +8,27 @@ export const buscar = async (req, res) => {
 
 export const crear = async (req, res) => {
   try {
-    const { titulo,contenido, fechaPublicacion, usuarioId } = req.body;
+    const { titulo, contenido, fechaPublicacion, usuarioId } = req.body;
 
-  console.log(usuarioId)
+    // Verificar que el usuario exista
     const usuario = await Usuario.findByPk(usuarioId);
     if (!usuario) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
 
-    const imagen = req.file ? req.file.filename : null;
-   
+    // Manejar la imagen, si se ha subido una
+    const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+
+    // Crear la nueva publicación
     const nuevaPublicacion = await Publicacion.create({
       titulo,
       imagen,
       contenido,
       fechaPublicacion,
-      UsuarioId: usuarioId
+      UsuarioId: 1
     });
 
+    // Responder con la nueva publicación creada
     res.status(201).json({ nuevaPublicacion });
   } catch (error) {
     console.error('Error al crear la publicación:', error);

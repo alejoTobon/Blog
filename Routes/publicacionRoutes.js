@@ -1,14 +1,9 @@
-import { buscar,crear,eliminar,actualizar } from "../Controllers/publicacionController.js";
-//import multer from 'multer';
-
-
+import { buscar, crear, eliminar, actualizar } from "../Controllers/publicacionController.js";
 import multer from 'multer';
 import path from 'path';
-
 import { Router } from "express";
 
 const publicacion = Router();
-
 
 // Configura el almacenamiento de archivos
 const storage = multer.diskStorage({
@@ -19,7 +14,7 @@ const storage = multer.diskStorage({
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // Nombre único basado en timestamp y número aleatorio
     
         const extname = path.extname(file.originalname).toLowerCase(); // Mantiene la extensión original del archivo
-        cb(null, `${"uniqueSuffix"}${extname}`);
+        cb(null, `${uniqueSuffix}${extname}`);
     }
 });
 
@@ -43,12 +38,9 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // Limita el tamaño del archivo a 5MB
 });
 
-
-
-
-publicacion.get("/publicacion/buscar", buscar)
-publicacion.post("/publicacion/crear",upload.single('imagen'),crear)
-publicacion.put("/publicacion/actualizar/:id",upload.single('imagen'), actualizar)
-publicacion.delete("/publicacion/eliminar/:id", eliminar)
+publicacion.get("/publicacion/buscar", buscar);
+publicacion.post("/publicacion/crear", upload.single('imagen'), crear);
+publicacion.put("/publicacion/actualizar/:id", upload.single('imagen'), actualizar);
+publicacion.delete("/publicacion/eliminar/:id", eliminar);
 
 export default publicacion;
