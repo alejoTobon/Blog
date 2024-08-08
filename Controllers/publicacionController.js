@@ -2,9 +2,22 @@ import { Publicacion } from "../Models/publicacion.js";
 import { Usuario } from "../Models/usuario.js";
 
 export const buscar = async (req, res) => {
-  const publicaciones = await Publicacion.findAll();
-  res.send({ publicaciones });
+  try {
+    const publicaciones = await Publicacion.findAll();
+    
+    // Ajusta la URL de la imagen para que sea accesible desde el frontend
+    const publicacionesConUrlImagen = publicaciones.map(publicacion => ({
+      ...publicacion.toJSON(),
+      imagenUrl: `http://localhost:3000/uploads/${publicacion.imagen}` // Asegúrate de que la URL sea correcta
+    }));
+
+    res.send({ publicaciones: publicacionesConUrlImagen });
+  } catch (error) {
+    console.error('Error al buscar publicaciones:', error);
+    res.status(500).json({ mensaje: 'Error interno del servidor' });
+  }
 };
+
 
 export const crear = async (req, res) => {
   try {
