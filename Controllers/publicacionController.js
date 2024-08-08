@@ -8,7 +8,7 @@ export const buscar = async (req, res) => {
     // Ajusta la URL de la imagen para que sea accesible desde el frontend
     const publicacionesConUrlImagen = publicaciones.map(publicacion => ({
       ...publicacion.toJSON(),
-      imagenUrl: `http://localhost:3000/uploads/${publicacion.imagen}` // Asegúrate de que la URL sea correcta
+      imagenUrl: `https://blog-ci2f.onrender.com/uploads/${publicacion.imagen}` // Asegúrate de que la URL sea correcta
     }));
 
     res.send({ publicaciones: publicacionesConUrlImagen });
